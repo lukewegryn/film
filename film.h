@@ -2,6 +2,7 @@
 #define FILM_H
 #include <QString>
 #include <QDate>
+
 class Film {
 	private:
 		QString m_FilmID;
@@ -32,9 +33,11 @@ class Entertainment : public Film{
 		FilmTypes m_Type;
 		MPAARatings m_Rating;
 	public:
-		Entertainment(QString id, QString title, QString dir, quint32 len, QDate relDate, Filmtypes type, MPAARatings rtng);
+		enum FilmTypes{Action, Comedy, SciFi, Horror};
+		enum MPAARatings{G,PG, PG13, R};
+		Entertainment(QString id, QString title, QString dir, quint32 len, QDate relDate, FilmTypes type, MPAARatings rtng);
 		Entertainment(QStringList propList);
-		QString toString(bool labeled, QString sepchar)
+		QString toString(bool labeled, QString sepchar);
 };
 
 class FilmList : public QList<Film*>
