@@ -16,6 +16,7 @@ class Film {
 		Film(QString id, QString title, QString dir, quint32 length, QDate relDate);
 		Film(QStringList& propList);
 		virtual QString toString(bool labeled, QString sepchar);
+		QString getID();
 	private:
 		QString m_FilmID;
 		QString m_Title;
@@ -49,11 +50,18 @@ class Entertainment : public Film {
 class FilmList : public QList<Film*>
 {
 	public:
+		FilmList() {}
+		~FilmList();
 		QString toString();
 		Film* findFilm(QString id);
 		QStringList getID(QString title);
 		void addFilm(Film* film);
 		void removeFilm(QString filmID);
+	private:
+		FilmList(const FilmList&);
+		FilmList& operator=(const FilmList&);
+
+
 };
 
 #endif

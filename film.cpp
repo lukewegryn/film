@@ -18,8 +18,10 @@ QString Film::toString(bool labeled, QString sep){
 			lengthString = "Long";
 			break;
 	}
-
-	return m_FilmID + sep + m_Title + sep + m_Director + sep + lengthString + sep + m_releaseDate.toString("yy/MM/dd");
+	if(!labeled)
+		return m_FilmID + sep + m_Title + sep + m_Director + sep + lengthString + sep + m_releaseDate.toString("yy/MM/dd");
+	else
+		return "ID: " + m_FilmID + sep + "Title: " + m_Title + sep + "Director: " + m_Director + sep + "Length: " + lengthString + sep + "Release Date: " + m_releaseDate.toString("yy/MM/dd");
 }
 
 Film::Film(QStringList& plst)
@@ -59,6 +61,8 @@ Film::Film(QString id, QString title, QString dir, quint32 length, QDate relDate
 		m_releaseDate = relDate;
 }
 
+QString Film::getID(){return m_FilmID;}
+
 QString Educational::toString(bool labeled, QString sep){
 
 	QString GradeLevelString = "";
@@ -71,7 +75,10 @@ QString Educational::toString(bool labeled, QString sep){
 		default: GradeLevelString = "None"; break;
 
 	}
-	return Film::toString(1, sep) + sep + m_Subject + sep + GradeLevelString;
+	if(labeled)
+		return Film::toString(1, sep) + sep + "Subject: " + m_Subject + sep + "Grade: " + GradeLevelString;
+	else
+		return Film::toString(0, sep) + sep + m_Subject + sep + GradeLevelString;
 }
 
 Educational::Educational(QStringList& plst) : Film(plst)
@@ -98,35 +105,97 @@ Educational::Educational(QString id, QString title, QString dir, quint32 len, QD
 }
 
 QString Entertainment::toString(bool labeled, QString sep){
-	return "a";
+	QString ratingString = "";
+	QString typeString = "";
+	switch(m_Rating)
+	{
+		case G: ratingString = "G"; break;
+		case PG: ratingString = "PG"; break;
+		case PG13: ratingString = "PG13"; break;
+		case R: ratingString = "R"; break;
+		default: ratingString = "None"; break;
+
+	}
+
+	switch(m_Type)
+	{
+		case Action: typeString = "Action"; break;
+		case Comedy: typeString = "Comedy"; break;
+		case SciFi: typeString = "SciFi"; break;
+		case Horror: typeString = "Horror"; break;
+		default: typeString = "None"; break;
+
+	}
+
+	if(labeled)
+		return Film::toString(1, sep) + sep + "Rating: " + ratingString + sep + "Type: " + typeString;
+	else
+		return Film::toString(0, sep) + sep + ratingString + sep + typeString;
 }
 
 Entertainment::Entertainment(QStringList& plst) : Film(plst)
 { 
+	QString typeString = plst.takeFirst();
+	QString ratingString = plst.takeFirst();
+	if(typeString == "Action")
+		m_Type = static_cast<FilmTypes>(Action);
+	else if(typeString == "Comedy")
+		m_Type = static_cast<FilmTypes>(Comedy);
+	else if(typeString == "SciFi")
+		m_Type = static_cast<FilmTypes>(SciFi);
+	else
+		m_Type = static_cast<FilmTypes>(Horror);
 
-	 m_Type = Action;
-	 m_Rating = R;
+	if(ratingString == "G")
+		m_Rating = static_cast<MPAARatings>(G);
+	else if(ratingString == "PG")
+		m_Rating = static_cast<MPAARatings>(PG);
+	else if(ratingString == "PG13")
+		m_Rating = static_cast<MPAARatings>(PG13);
+	else
+		m_Rating = static_cast<MPAARatings>(R);
 }
 
 Entertainment::Entertainment(QString id, QString title, QString dir, quint32 len, QDate relDate, FilmTypes type, MPAARatings rtng) : Film(id, title, dir, len, relDate)
 {
- 	m_Type = Action;
-	 m_Rating = R;
+ 	m_Type = type;
+	m_Rating = rtng;
 }
+
+FilmList::~FilmList() {
+	qDeleteAll(*this);
+	clear();
+}
+
+FilmList::FilmList(const FilmList&) : QList<Film*>() {}
+
+FilmList& FilmList::operator=(const FilmList&){
+	return *this;
+}
+
+/*void FilmList::addFilm(Film*& film)
+{
+	QString id(film->ID)
+}*/
 
 
 int main()
 {
-	QStringList plst, eplist;
-	plst << "001" << "Pirates of the Carribean" << "Johnny Depp" << "32" << "2014/02/02";
-	eplist << "001" << "Pirates of the Carribean" << "Johnny Depp" << "32" << "2014/02/02" << "Adventure" << "High";
-	Film myFilm("movie", "good", "john", 160, QDate(2014, 02, 04));
-	Educational myEducationalFilm("edMovie", "edgood", "edjohn", 32, QDate(2014,02,04), "Antoinette DeFeliz", static_cast<Grade>(Elementary));
-	Film myOtherFilm(plst);
-	Educational myOtherEducationalFilm(eplist);
-	qout << myFilm.toString(1, ",") << endl;
-	qout << myEducationalFilm.toString(1, ",") << endl;
-	qout << myOtherFilm.toString(1, ":") << endl;
-	qout << myOtherEducationalFilm.toString(1,"-->") << endl;
+	QStringList plst, eplist, eeplist;
+	//plst << "001" << "Pirates of the Carribean" << "Johnny Depp" << "32" << "2014/02/02";
+	//eplist << "001" << "Pirates of the Carribean" << "Johnny Depp" << "32" << "2014/02/02" << "Adventure" << "High";
+	//Film myFilm("movie", "good", "john", 160, QDate(2014, 02, 04));
+	//Educational myEducationalFilm("edMovie", "edgood", "edjohn", 32, QDate(2014,02,04), "Antoinette DeFeliz", static_cast<Grade>(Elementary));
+	//Film myOtherFilm(plst);
+	//Educational myOtherEducationalFilm(eplist);
+	eeplist  << "001" << "Pirates of the Carribean" << "Johnny Depp" << "32" << "2014/02/02" << "Comedy" << "PG13";
+	Entertainment myEntertainmentFilm("movie", "good", "john", 160, QDate(2014, 02, 04), static_cast<FilmTypes>(Action), static_cast<MPAARatings>(R));
+	Entertainment myOtherEntertainmentFilm(eeplist);
+	//qout << myFilm.toString(1, "\n") << endl;
+	//qout << myEducationalFilm.toString(1, "\n") << endl;
+	//qout << myOtherFilm.toString(1, "\n") << endl;
+	//qout << myOtherEducationalFilm.toString(1,"\n") << endl;
+	qout << myEntertainmentFilm.toString(1, "\n") << endl << endl;
+	qout << myOtherEntertainmentFilm.toString(1, "\n") << endl;
 	return 0;
 }
