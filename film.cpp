@@ -78,18 +78,16 @@ Educational::Educational(QStringList& plst) : Film(plst)
 { 
 
 	 m_Subject = plst.takeFirst();
-	 //QString tempGrade = plst.takeFirst();
-	/*if(tempGrade == "Elementary")
-		m_GradeLevel = static_cast<Grade>(A);
-	else if(tempGrade == "B")
-		m_GradeLevel = static_cast<Grade>(B);
-	else if(tempGrade == "C")
-	 	m_GradeLevel = static_cast<Grade>(C);
-	else if (tempGrade == "D")
-	 	m_GradeLevel = static_cast<Grade>(D);
+	QString tempString = plst.takeFirst();
+	if(tempString == "Elementary")
+		m_GradeLevel = static_cast<Grade>(Elementary);
+	else if(tempString == "Middle")
+		m_GradeLevel = static_cast<Grade>(Middle);
+	else if(tempString == "High")
+		m_GradeLevel = static_cast<Grade>(High);
 	else
-	 	m_GradeLevel = static_cast<Grade>(F);*/
-	//m_GradeLevel = static_cast<Grade>(plst.takeFirst());
+		m_GradeLevel = static_cast<Grade>(College);
+
 
 }
 
@@ -119,13 +117,16 @@ Entertainment::Entertainment(QString id, QString title, QString dir, quint32 len
 
 int main()
 {
-	QStringList plst;
+	QStringList plst, eplist;
 	plst << "001" << "Pirates of the Carribean" << "Johnny Depp" << "32" << "2014/02/02";
+	eplist << "001" << "Pirates of the Carribean" << "Johnny Depp" << "32" << "2014/02/02" << "Adventure" << "High";
 	Film myFilm("movie", "good", "john", 160, QDate(2014, 02, 04));
 	Educational myEducationalFilm("edMovie", "edgood", "edjohn", 32, QDate(2014,02,04), "Antoinette DeFeliz", static_cast<Grade>(Elementary));
 	Film myOtherFilm(plst);
+	Educational myOtherEducationalFilm(eplist);
 	qout << myFilm.toString(1, ",") << endl;
 	qout << myEducationalFilm.toString(1, ",") << endl;
 	qout << myOtherFilm.toString(1, ":") << endl;
+	qout << myOtherEducationalFilm.toString(1,"-->") << endl;
 	return 0;
 }
