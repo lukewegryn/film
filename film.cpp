@@ -2,7 +2,11 @@
 #include <QTextStream>
 #include <QStream.h>
 #include <QStringList>
+#include <QList>
 #include <iostream>
+
+Film::~Film()
+{}
 
 QString Film::toString(bool labeled, QString sep){
 	QString lengthString = " ";
@@ -61,7 +65,10 @@ Film::Film(QString id, QString title, QString dir, quint32 length, QDate relDate
 		m_releaseDate = relDate;
 }
 
-QString Film::getID(){return m_FilmID;}
+QString Film::getID()
+{
+	return m_FilmID;
+}
 
 QString Educational::toString(bool labeled, QString sep){
 
@@ -173,29 +180,56 @@ FilmList& FilmList::operator=(const FilmList&){
 	return *this;
 }
 
-/*void FilmList::addFilm(Film*& film)
+/*void FilmList::removeFilm(QString filmID)
 {
-	QString id(film->ID)
+	Film* theFilm;
+	if(findFilm(filmID) != 0)
+	{
+		theFilm = findFilm(filmID);
+		delete theFilm;
+	}
 }*/
+
+Film* FilmList::findFilm(QString filmID)
+{
+	for(int i = 0; i < size(); i++)
+	{
+		if(at(i)->getID() == filmID)
+			return at(i);
+	}
+	return 0;
+}
+
+void FilmList::addFilm(Film* film)
+{
+	//qout << film->getID();
+	if(findFilm(film->getID()) == 0)
+		append(film);
+}
 
 
 int main()
 {
 	QStringList plst, eplist, eeplist;
-	//plst << "001" << "Pirates of the Carribean" << "Johnny Depp" << "32" << "2014/02/02";
-	//eplist << "001" << "Pirates of the Carribean" << "Johnny Depp" << "32" << "2014/02/02" << "Adventure" << "High";
-	//Film myFilm("movie", "good", "john", 160, QDate(2014, 02, 04));
+	plst << "001" << "Pirates of the Carribean" << "Johnny Depp" << "32" << "2014/02/02";
+	eplist << "001" << "Pirates of the Carribean" << "Johnny Depp" << "32" << "2014/02/02" << "Adventure" << "High";
+	Film myFilm("movie", "good", "john", 160, QDate(2014, 02, 04));
 	//Educational myEducationalFilm("edMovie", "edgood", "edjohn", 32, QDate(2014,02,04), "Antoinette DeFeliz", static_cast<Grade>(Elementary));
 	//Film myOtherFilm(plst);
 	//Educational myOtherEducationalFilm(eplist);
 	eeplist  << "001" << "Pirates of the Carribean" << "Johnny Depp" << "32" << "2014/02/02" << "Comedy" << "PG13";
-	Entertainment myEntertainmentFilm("movie", "good", "john", 160, QDate(2014, 02, 04), static_cast<FilmTypes>(Action), static_cast<MPAARatings>(R));
+	Entertainment myEntertainmentFilm("001", "good", "john", 160, QDate(2014, 02, 04), static_cast<FilmTypes>(Action), static_cast<MPAARatings>(R));
 	Entertainment myOtherEntertainmentFilm(eeplist);
 	//qout << myFilm.toString(1, "\n") << endl;
 	//qout << myEducationalFilm.toString(1, "\n") << endl;
 	//qout << myOtherFilm.toString(1, "\n") << endl;
 	//qout << myOtherEducationalFilm.toString(1,"\n") << endl;
-	qout << myEntertainmentFilm.toString(1, "\n") << endl << endl;
-	qout << myOtherEntertainmentFilm.toString(1, "\n") << endl;
+	//qout << myEntertainmentFilm.toString(1, "\n") << endl << endl;
+	//qout << myOtherEntertainmentFilm.toString(1, "\n") << endl;
+	FilmList myFilmList;
+	Film* ref = new Film(plst);
+	myFilmList.addFilm(ref);
+	//qout << myFilm.toString(0, "\n");
+	//qout << myFilm.getID();
 	return 0;
 }

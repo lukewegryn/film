@@ -12,7 +12,7 @@ enum Length {Short, Medium, Long};
 
 class Film {
 	public:
-		//virtual ~Film();
+		virtual ~Film();
 		Film(QString id, QString title, QString dir, quint32 length, QDate relDate);
 		Film(QStringList& propList);
 		virtual QString toString(bool labeled, QString sepchar);
