@@ -7,7 +7,7 @@
 
 enum FilmTypes {Action, Comedy, SciFi, Horror};
 enum MPAARatings{G,PG, PG13, R};
-enum Grade {A, B, C, D, F};
+enum Grade {Elementary, Middle, High, College};
 enum Length {Short, Medium, Long};
 
 class Film {
