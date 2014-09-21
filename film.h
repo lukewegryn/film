@@ -3,6 +3,12 @@
 #include <QString>
 #include <QStringList>
 #include <QDate>
+#include <QList>
+
+enum FilmTypes {Action, Comedy, SciFi, Horror};
+enum MPAARatings{G,PG, PG13, R};
+enum Grade {A, B, C, D, F};
+enum Length {Short, Medium, Long};
 
 class Film {
 	public:
@@ -10,10 +16,6 @@ class Film {
 		Film(QString id, QString title, QString dir, quint32 length, QDate relDate);
 		Film(QStringList& propList);
 		virtual QString toString(bool labeled, QString sepchar);
-		enum FilmTypes {Action, Comedy, SciFi, Horror};
-		enum MPAARatings{G,PG, PG13, R};
-		enum Grade {A, B, C, D, E, F};
-		enum Length {Short, Medium, Long};
 	private:
 		QString m_FilmID;
 		QString m_Title;
@@ -34,7 +36,7 @@ class Educational : public Film {
 
 };
 
-class Entertainment : public Film{
+class Entertainment : public Film {
 	private:
 		FilmTypes m_Type;
 		MPAARatings m_Rating;
