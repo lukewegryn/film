@@ -4,16 +4,21 @@
 #include <QDate>
 
 class Film {
+	public:
+		virtual ~Film();
+		Film(QString id, QString title, QString dir, quint32 length, QDate relDate);
+		Film(QStringList propList);
+		virtual QString toString(bool labeled, QString sepchar);
+		enum FilmTypes {Action, Comedy, SciFi, Horror};
+		enum MPAARatings{G,PG, PG13, R};
+		enum Grade {A, B, C, D, E, F};
+		enum Length {Short, Medium, Long};
 	private:
 		QString m_FilmID;
 		QString m_Title;
 		QString m_Director;
 		Length m_FilmLength;
 		QDate m_releaseDate;
-	public:
-		Film(QString id, QString title, QString dir, quint32 length, QDate relDate);
-		Film(QStringList propList);
-		virtual QString toString(bool labeled, QString sepchar);
 
 };
 
@@ -33,8 +38,6 @@ class Entertainment : public Film{
 		FilmTypes m_Type;
 		MPAARatings m_Rating;
 	public:
-		enum FilmTypes{Action, Comedy, SciFi, Horror};
-		enum MPAARatings{G,PG, PG13, R};
 		Entertainment(QString id, QString title, QString dir, quint32 len, QDate relDate, FilmTypes type, MPAARatings rtng);
 		Entertainment(QStringList propList);
 		QString toString(bool labeled, QString sepchar);
