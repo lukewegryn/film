@@ -1,13 +1,14 @@
 #ifndef FILM_H
 #define FILM_H
 #include <QString>
+#include <QStringList>
 #include <QDate>
 
 class Film {
 	public:
-		virtual ~Film();
+		//virtual ~Film();
 		Film(QString id, QString title, QString dir, quint32 length, QDate relDate);
-		Film(QStringList propList);
+		Film(QStringList& propList);
 		virtual QString toString(bool labeled, QString sepchar);
 		enum FilmTypes {Action, Comedy, SciFi, Horror};
 		enum MPAARatings{G,PG, PG13, R};
@@ -23,13 +24,13 @@ class Film {
 };
 
 class Educational : public Film {
+	public:
+		Educational(QString id, QString title, QString dir, quint32 len, QDate relDate, QString subject, Grade grade);
+		Educational(QStringList& propList);
+		QString toString(bool labeled, QString sepchar);
 	private:
 		QString m_Subject;
 		Grade m_GradeLevel;
-	public:
-		Educational(QString id, QString title, QString dir, quint32 len, QDate relDate, QString subject, Grade grade);
-		Educational(QStringList propList);
-		QString toString(bool labeled, QString sepchar);
 
 };
 
@@ -39,7 +40,7 @@ class Entertainment : public Film{
 		MPAARatings m_Rating;
 	public:
 		Entertainment(QString id, QString title, QString dir, quint32 len, QDate relDate, FilmTypes type, MPAARatings rtng);
-		Entertainment(QStringList propList);
+		Entertainment(QStringList& propList);
 		QString toString(bool labeled, QString sepchar);
 };
 
