@@ -1,3 +1,10 @@
+/*
+* Luke Wegryn
+* 9057-39534
+* lwegryn@vt.edu
+* ECE 3574
+* Homework 2
+*/
 #include "film.h"
 #include <QTextStream>
 #include <QStream.h>
@@ -259,12 +266,16 @@ MPAARatings Entertainment::getRating()
 
 Film* FilmList::findFilmByTitle(QString title)
 {
+	Film* filmptr = NULL;
 	for(int i = 0; i < size(); i++)
 	{
 		if(at(i)->getTitle() == title)
-			return at(i);
+		{
+			filmptr = at(i);
+			qout << "ID: " << at(i)->getID() << "\n" << flush;
+		}
 	}
-	return 0;
+	return filmptr;
 }
 
 void FilmList::addFilm(Film* film)
