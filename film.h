@@ -17,6 +17,7 @@ class Film {
 		Film(QStringList& propList);
 		virtual QString toString(bool labeled, QString sepchar);
 		QString getID();
+		QString getTitle();
 	private:
 		QString m_FilmID;
 		QString m_Title;
@@ -54,6 +55,7 @@ class FilmList : public QList<Film*>
 		~FilmList();
 		QString toString();
 		Film* findFilm(QString id);
+		Film* findFilmByTitle(QString title);
 		QStringList getID(QString title);
 		void addFilm(Film* film);
 		void removeFilm(QString filmID);

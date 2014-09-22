@@ -64,6 +64,17 @@ void findPrompt(FilmList& filmList)
 	qout << "\n" << flush;
 }
 
+void findByTitlePrompt(FilmList& filmList)
+{
+	qout << "Enter the Title of the Film: " << flush;
+	QString title = qin.readLine();
+	Film* myFilm = filmList.findFilmByTitle(title);
+	if(myFilm != NULL)
+	{
+		qout << myFilm->toString(1, "\n") << flush;
+	}
+	qout << "\n" << flush;
+}
 bool addPrompt(FilmList& myFilmList)
 {
 	int choice;
@@ -97,6 +108,13 @@ bool addPrompt(FilmList& myFilmList)
 	return true;
 }
 
+void removePrompt(FilmList& myFilmList)
+{
+	qout << "Enter the ID of the Film: " << flush;
+	QString id = qin.readLine();
+    myFilmList.removeFilm(id);
+}
+
 
 
 int main()
@@ -127,8 +145,8 @@ int main()
 		{
 			case ADD: addPrompt(myFilmList); break;
 			case FIND: findPrompt(myFilmList); break;
-			case REMOVE: qout << "Remove Something\n"; break;
-			case GETID: qout << "Get ID of something\n"; break;
+			case REMOVE: removePrompt(myFilmList); break;
+			case GETID: findByTitlePrompt(myFilmList); break;
 			case QUIT: isFinished = true;
 		}
 	}

@@ -70,6 +70,11 @@ QString Film::getID()
 	return m_FilmID;
 }
 
+QString Film::getTitle()
+{
+	return m_Title;
+}
+
 QString Educational::toString(bool labeled, QString sep){
 
 	QString GradeLevelString = "";
@@ -180,21 +185,32 @@ FilmList& FilmList::operator=(const FilmList&){
 	return *this;
 }
 
-/*void FilmList::removeFilm(QString filmID)
+void FilmList::removeFilm(QString filmID)
 {
 	Film* theFilm;
 	if(findFilm(filmID) != 0)
 	{
 		theFilm = findFilm(filmID);
+		removeAll(theFilm);
 		delete theFilm;
 	}
-}*/
+}
 
 Film* FilmList::findFilm(QString filmID)
 {
 	for(int i = 0; i < size(); i++)
 	{
 		if(at(i)->getID() == filmID)
+			return at(i);
+	}
+	return 0;
+}
+
+Film* FilmList::findFilmByTitle(QString title)
+{
+	for(int i = 0; i < size(); i++)
+	{
+		if(at(i)->getTitle() == title)
 			return at(i);
 	}
 	return 0;
@@ -209,5 +225,6 @@ void FilmList::addFilm(Film* film)
 			append(film);
 	}
 }
+
 
 
