@@ -20,7 +20,51 @@ Choices nextTask() {
    return static_cast<Choices>(choice);
 }
 
-bool addPrompt()
+QStringList promptEntertainment(){
+qout << "Enter the following information" << endl << flush;
+QStringList retList;
+QStringList questionList;
+questionList << "ID" << "Title" << "Director" << "Length (integer)" << "Date (YYYY/MM/DD)" << "FilmType (Action, Comedy, SciFi or Horror)" << "Rating (G, PG, PG13 or R)";
+QString inputData;
+	for(int i = 0; i < questionList.size(); i++)
+	{
+		qout << questionList.at(i) << ": " << flush;
+		inputData = qin.readLine();
+		retList.append(inputData);
+	}
+
+	return retList;
+}
+
+QStringList promptEducational(){
+	qout << "Enter the following information" << endl << flush;
+	QStringList retList;
+	QStringList questionList;
+	questionList << "ID" << "Title" << "Director" << "Length (integer)" << "Date (YYYY/MM/DD)" << "Subject" << "Grade (Elementary, Middle, High or College)";
+	QString inputData;
+	for(int i = 0; i < questionList.size(); i++)
+	{
+		qout << questionList.at(i) << ": " << flush;
+		inputData = qin.readLine();
+		retList.append(inputData);
+	}
+
+	return retList;
+}
+
+void findPrompt(FilmList& filmList)
+{
+	qout << "Enter the ID of the Film: " << flush;
+	QString id = qin.readLine();
+	Film* myFilm = filmList.findFilm(id);
+	if(myFilm != NULL)
+	{
+		qout << myFilm->toString(1, "\n") << flush;
+	}
+	qout << "\n" << flush;
+}
+
+bool addPrompt(FilmList& myFilmList)
 {
 	int choice;
 	do {
@@ -34,12 +78,26 @@ bool addPrompt()
 
 	switch(type)
 	{
-		case EDUCATIONAL: break;
-		case ENTERTAINMENT: break;
+		case EDUCATIONAL: 
+		{
+			QStringList myList = promptEducational();
+			Educational* refEnt = new Educational(myList); 
+			myFilmList.addFilm(refEnt);
+			break;
+		}
+		case ENTERTAINMENT: 
+		{
+			QStringList myList = promptEntertainment();
+			Entertainment* refEnt = new Entertainment(myList); 
+			myFilmList.addFilm(refEnt);
+			break;
+		}
 	}
 
 	return true;
 }
+
+
 
 int main()
 {
@@ -61,12 +119,14 @@ int main()
 	return 0;*/
 
 	bool isFinished = false;
+	FilmList myFilmList;
+
 	while (!isFinished)
 	{
 		switch(nextTask())
 		{
-			case ADD: addPrompt(); break;
-			case FIND: qout << "Find something\n"; break;
+			case ADD: addPrompt(myFilmList); break;
+			case FIND: findPrompt(myFilmList); break;
 			case REMOVE: qout << "Remove Something\n"; break;
 			case GETID: qout << "Get ID of something\n"; break;
 			case QUIT: isFinished = true;
