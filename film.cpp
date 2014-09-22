@@ -203,33 +203,11 @@ Film* FilmList::findFilm(QString filmID)
 void FilmList::addFilm(Film* film)
 {
 	//qout << film->getID();
-	if(findFilm(film->getID()) == 0)
-		append(film);
+	if(film != NULL)
+	{
+		if(findFilm(film->getID()) == 0)
+			append(film);
+	}
 }
 
 
-int main()
-{
-	QStringList plst, eplist, eeplist;
-	plst << "001" << "Pirates of the Carribean" << "Johnny Depp" << "32" << "2014/02/02";
-	eplist << "001" << "Pirates of the Carribean" << "Johnny Depp" << "32" << "2014/02/02" << "Adventure" << "High";
-	Film myFilm("movie", "good", "john", 160, QDate(2014, 02, 04));
-	//Educational myEducationalFilm("edMovie", "edgood", "edjohn", 32, QDate(2014,02,04), "Antoinette DeFeliz", static_cast<Grade>(Elementary));
-	//Film myOtherFilm(plst);
-	//Educational myOtherEducationalFilm(eplist);
-	eeplist  << "001" << "Pirates of the Carribean" << "Johnny Depp" << "32" << "2014/02/02" << "Comedy" << "PG13";
-	Entertainment myEntertainmentFilm("001", "good", "john", 160, QDate(2014, 02, 04), static_cast<FilmTypes>(Action), static_cast<MPAARatings>(R));
-	Entertainment myOtherEntertainmentFilm(eeplist);
-	//qout << myFilm.toString(1, "\n") << endl;
-	//qout << myEducationalFilm.toString(1, "\n") << endl;
-	//qout << myOtherFilm.toString(1, "\n") << endl;
-	//qout << myOtherEducationalFilm.toString(1,"\n") << endl;
-	//qout << myEntertainmentFilm.toString(1, "\n") << endl << endl;
-	//qout << myOtherEntertainmentFilm.toString(1, "\n") << endl;
-	FilmList myFilmList;
-	Film* ref = new Film(plst);
-	myFilmList.addFilm(ref);
-	//qout << myFilm.toString(0, "\n");
-	//qout << myFilm.getID();
-	return 0;
-}
