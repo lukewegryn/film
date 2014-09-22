@@ -18,6 +18,9 @@ class Film {
 		virtual QString toString(bool labeled, QString sepchar);
 		QString getID();
 		QString getTitle();
+		QString getDirector();
+		Length getFilmLength();
+		QDate getReleaseDate();
 	private:
 		QString m_FilmID;
 		QString m_Title;
@@ -32,6 +35,8 @@ class Educational : public Film {
 		Educational(QString id, QString title, QString dir, quint32 len, QDate relDate, QString subject, Grade grade);
 		Educational(QStringList& propList);
 		QString toString(bool labeled, QString sepchar);
+		QString getSubject();
+		Grade getGradeLevel();
 	private:
 		QString m_Subject;
 		Grade m_GradeLevel;
@@ -46,6 +51,8 @@ class Entertainment : public Film {
 		Entertainment(QString id, QString title, QString dir, quint32 len, QDate relDate, FilmTypes type, MPAARatings rtng);
 		Entertainment(QStringList& propList);
 		QString toString(bool labeled, QString sepchar);
+		FilmTypes getType();
+		MPAARatings getRating();
 };
 
 class FilmList : public QList<Film*>
@@ -59,6 +66,7 @@ class FilmList : public QList<Film*>
 		QStringList getID(QString title);
 		void addFilm(Film* film);
 		void removeFilm(QString filmID);
+		bool alreadyExists(Film* film);
 	private:
 		FilmList(const FilmList&);
 		FilmList& operator=(const FilmList&);

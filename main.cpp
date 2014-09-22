@@ -2,16 +2,16 @@
 #include "film.cpp"
 
 enum Choices {ADD, FIND, REMOVE, GETID, QUIT};
-enum TypeOfFilm{EDUCATIONAL, ENTERTAINMENT};
+enum TypeOfFilm{EDUCATIONAL, ENTERTAINMENT, FILM};
 Choices nextTask() {
    int choice;
    QString response;
    do {
       
-        qout << ADD << ". Add items to the Library.\n"
+        qout << ADD << ". Add items to the Film List.\n"
            << FIND << ". Find by ID and display results.\n"
-           << REMOVE << ". Remove an item from the Library.\n"
-           << GETID << ". Get ID by Title\n"
+           << REMOVE << ". Remove an item from the Film List.\n"
+           << GETID << ". Get theID by Title.\n"
            << QUIT << ". Exit from this program.\n"
            << "Your choice: " << flush;
      response = qin.readLine();
@@ -52,6 +52,21 @@ QStringList promptEducational(){
 	return retList;
 }
 
+QStringList promptFilm(){
+	qout << "Enter the following information" << endl << flush;
+	QStringList retList;
+	QStringList questionList;
+	questionList << "ID" << "Title" << "Director" << "Length (integer)" << "Date (YYYY/MM/DD)";
+	QString inputData;
+	for(int i = 0; i < questionList.size(); i++)
+	{
+		qout << questionList.at(i) << ": " << flush;
+		inputData = qin.readLine();
+		retList.append(inputData);
+	}
+	return retList;
+}
+
 void findPrompt(FilmList& filmList)
 {
 	qout << "Enter the ID of the Film: " << flush;
@@ -81,10 +96,10 @@ bool addPrompt(FilmList& myFilmList)
 	do {
 		qout << "Follow the instructions to add a Film" << endl << flush;
 		qout << "What kind of film is it?" << endl << flush;
-		qout << EDUCATIONAL << ". Educational\n" << ENTERTAINMENT << ". Entertainment\n" << flush;
+		qout << EDUCATIONAL << ". Educational\n" << ENTERTAINMENT << ". Entertainment\n" << FILM << ". Film\n" << flush;
 		qout << "Your choice: " << flush;
 		choice = qin.readLine().toInt();
-	} while(choice < EDUCATIONAL or choice > ENTERTAINMENT);
+	} while(choice < EDUCATIONAL or choice > FILM);
 	TypeOfFilm type = static_cast<TypeOfFilm>(choice);
 
 	switch(type)
@@ -100,6 +115,14 @@ bool addPrompt(FilmList& myFilmList)
 		{
 			QStringList myList = promptEntertainment();
 			Entertainment* refEnt = new Entertainment(myList); 
+			myFilmList.addFilm(refEnt);
+			break;
+		}
+
+		case FILM:
+		{
+			QStringList myList = promptFilm();
+			Film* refEnt = new Film(myList); 
 			myFilmList.addFilm(refEnt);
 			break;
 		}
@@ -119,22 +142,6 @@ void removePrompt(FilmList& myFilmList)
 
 int main()
 {
-	/*QStringList plst, eplist, eeplist;
-	plst << "001" << "Pirates of the Carribean" << "Johnny Depp" << "32" << "2014/02/02";
-	eplist << "001" << "Pirates of the Carribean" << "Johnny Depp" << "32" << "2014/02/02" << "Adventure" << "High";
-	Film myFilm("movie", "good", "john", 160, QDate(2014, 02, 04));
-	eeplist  << "001" << "Pirates of the Carribean" << "Johnny Depp" << "32" << "2014/02/02" << "Comedy" << "PG13";
-
-	FilmList myFilmList;
-	Film* ref = new Film(plst);
-	Entertainment* refEnt = new Entertainment(eeplist);
-	myFilmList.addFilm(ref);
-	myFilmList.addFilm(refEnt);
-	Film* trial = myFilmList.findFilm("001");
-	qout << trial->toString(1, "\n");
-	//qout << myFilm.toString(0, "\n");
-	//qout << myFilm.getID();
-	return 0;*/
 
 	bool isFinished = false;
 	FilmList myFilmList;

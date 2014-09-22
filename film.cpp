@@ -4,6 +4,7 @@
 #include <QStringList>
 #include <QList>
 #include <iostream>
+#include <typeinfo>
 
 Film::~Film()
 {}
@@ -206,6 +207,56 @@ Film* FilmList::findFilm(QString filmID)
 	return 0;
 }
 
+bool FilmList::alreadyExists(Film* film)
+{
+	bool exists = false;
+	for(int i = 0; i < size(); i++)
+	{
+		if(typeid(*at(i)) == typeid(*film))
+			if(at(i)->getID() == film->getID())
+				if(at(i)->getDirector() == film->getDirector())
+					if(at(i)->getTitle() == film->getTitle())
+						if(at(i)->getFilmLength() == film->getFilmLength())
+							if(at(i)->getReleaseDate() == film->getReleaseDate())
+								exists = true;
+	}
+
+	return exists;
+}
+
+QString Film::getDirector()
+{
+	return m_Director;
+}
+Length Film::getFilmLength()
+{
+	return m_FilmLength;
+}
+QDate Film::getReleaseDate()
+{
+	return m_releaseDate;
+}
+
+QString Educational::getSubject()
+{
+	return m_Subject;
+}
+
+Grade Educational::getGradeLevel()
+{
+	return m_GradeLevel;
+}
+
+FilmTypes Entertainment::getType()
+{
+	return m_Type;
+}
+
+MPAARatings Entertainment::getRating()
+{
+	return m_Rating;
+}
+
 Film* FilmList::findFilmByTitle(QString title)
 {
 	for(int i = 0; i < size(); i++)
@@ -221,8 +272,10 @@ void FilmList::addFilm(Film* film)
 	//qout << film->getID();
 	if(film != NULL)
 	{
-		if(findFilm(film->getID()) == 0)
+		if(!alreadyExists(film))
 			append(film);
+		else 
+			qout << "That entry already exists.\n";
 	}
 }
 
